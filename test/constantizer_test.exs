@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Design.AliasUsage
 defmodule ConstantizerTest do
   use ExUnit.Case
 
