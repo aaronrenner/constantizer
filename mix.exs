@@ -47,7 +47,7 @@ defmodule Constantizer.MixProject do
   end
 
   defp description do
-    "Helpers to evaluate functions at compile-time"
+    "Turns functions into constants at compile-time"
   end
 
   defp package do
