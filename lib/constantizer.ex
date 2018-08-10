@@ -55,6 +55,6 @@ defmodule Constantizer do
   end
 
   defp resolve_at_compile_time? do
-    Application.get_env(:constantizer, :resolve_at_compile_time, false)
+    Application.get_env(:constantizer, :resolve_at_compile_time, true)
   end
 end
