@@ -21,28 +21,36 @@ defmodule Constantizer do
     if resolve_at_compile_time?() do
       {result, _} = Code.eval_quoted(block, [], env)
 
-      dynamic_def(visibility, name) do
-        # Avoid unused alias warnings
-        _ = fn -> block end
+      dynamic_def(
+        visibility,
+        name,
+        quote do
+          # Avoid unused alias warnings
+          _ = fn -> unquote(block) end
 
-        result
-      end
+          unquote(result)
+        end
+      )
     else
-      dynamic_def(visibility, name) do
-        block
-      end
+      dynamic_def(
+        visibility,
+        name,
+        quote do
+          unquote(block)
+        end
+      )
     end
   end
 
-  defp dynamic_def(:private, name, do: block) do
+  defp dynamic_def(:private, name, ast) do
     quote do
-      defp unquote(name), do: unquote(block)
+      defp unquote(name), do: unquote(ast)
     end
   end
 
-  defp dynamic_def(:public, name, do: block) do
+  defp dynamic_def(:public, name, ast) do
     quote do
-      def unquote(name), do: unquote(block)
+      def unquote(name), do: unquote(ast)
     end
   end
 

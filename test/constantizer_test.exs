@@ -12,16 +12,19 @@ defmodule ConstantizerTest do
                defmodule ConstantizerTest.ResolvedConsts do
                  import Constantizer
 
+                 alias ExUnit.Assertions
+
                  defconst public_const do
+                   _ = Assertions
                    send self(), :called
-                   :ok
+                   :public_const_return
                  end
 
                  def call_private, do: private_const()
 
                  defconstp private_const do
                    send self(), :private_called
-                   :ok
+                   :private_const_return
                   end
                end
                """)
@@ -34,13 +37,13 @@ defmodule ConstantizerTest do
     end
 
     test "defconst does not run the function at runtime" do
-      assert :ok = ConstantizerTest.ResolvedConsts.public_const()
+      assert :public_const_return = ConstantizerTest.ResolvedConsts.public_const()
 
       refute_received :called
     end
 
     test "defconstp does not run the function at runtime" do
-      assert :ok = ConstantizerTest.ResolvedConsts.call_private()
+      assert :private_const_return = ConstantizerTest.ResolvedConsts.call_private()
 
       refute_received :private_called
     end
@@ -56,16 +59,19 @@ defmodule ConstantizerTest do
                defmodule ConstantizerTest.UnresolvedConsts do
                  import Constantizer
 
+                 alias ExUnit.Assertions
+
                  defconst public_const do
                    send self(), :called
-                   :ok
+                   :public_const_return
                  end
 
                  def call_private_const, do: private_const()
 
                  defconstp private_const do
+                   _ = Assertions
                    send self(), :private_called
-                   :ok
+                   :private_const_return
                  end
 
                end
@@ -77,13 +83,13 @@ defmodule ConstantizerTest do
     end
 
     test "defconst runs the function at runtime" do
-      assert :ok = ConstantizerTest.UnresolvedConsts.public_const()
+      assert :public_const_return = ConstantizerTest.UnresolvedConsts.public_const()
 
       assert_received :called
     end
 
     test "defconstp runs the function at runtime" do
-      assert :ok = ConstantizerTest.UnresolvedConsts.call_private_const()
+      assert :private_const_return = ConstantizerTest.UnresolvedConsts.call_private_const()
 
       assert_received :private_called
     end
