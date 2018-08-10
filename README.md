@@ -10,7 +10,7 @@ Just add `constantizer` to your list of dependencies.
 
 ```elixir
 def deps do
-  [{:constantizer, "~> 0.1.0"}]
+  [{:constantizer, "~> 0.2.0"}]
 end
 ```
 
@@ -48,4 +48,9 @@ config.
 config :constantizer, resolve_at_compile_time: false
 ```
 
+## Docs
+
+The docs for this project are available on [hexdocs][1].
+
 [0]: https://elixirconf.com/2018/speakers/aaron-renner
+[1]: https://hexdocs.pm/constantizer
