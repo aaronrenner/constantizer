@@ -48,6 +48,42 @@ config.
 config :constantizer, resolve_at_compile_time: false
 ```
 
+## Benchmarks
+
+You can run constantizer's benchmarks with the following command.
+
+```
+mix run benchmarks/general.exs
+```
+
+Here is some sample output from our benchmarks that call the following module
+
+```elixir
+defmodule MyModule do
+  import Constantizer
+
+  def runtime_lookup do
+    Application.get_env(:constantizer, :foo)
+  end
+
+  defconst compile_time_lookup do
+    Application.get_env(:constantizer, :foo)
+  end
+end
+```
+
+```
+Name                          ips        average  deviation         median         99th %
+compile_time_lookup       87.43 M      0.0114 μs    ±17.43%      0.0110 μs      0.0130 μs
+runtime_lookup             4.62 M        0.22 μs    ±41.15%        0.21 μs        0.40 μs
+
+Comparison:
+compile_time_lookup       87.43 M
+runtime_lookup             4.62 M - 18.93x slower
+```
+
+The compile time lookup using `defconst` is 18x faster than using a normal `def` because `Application.get_env/2` is evaluated at compile time instead of runtime.
+
 ## Docs
 
 The docs for this project are available on [hexdocs][1].
