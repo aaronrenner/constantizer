@@ -88,5 +88,5 @@ The compile time lookup using `defconst` is 18x faster than using a normal `def`
 
 The docs for this project are available on [hexdocs][1].
 
-[0]: https://elixirconf.com/2018/speakers/aaron-renner
+[0]: https://www.youtube.com/watch?v=Ue--hvFzr0o
 [1]: https://hexdocs.pm/constantizer
